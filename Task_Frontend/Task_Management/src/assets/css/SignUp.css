@@ -1,0 +1,39 @@
+/* Sign Up */
+.card3{
+    width: 25rem;
+    height: 78vh;
+    margin-top: 3rem;
+    margin-left: 28rem;
+}
+
+.card4{
+    width: 25rem;
+    height: 10vh;
+    margin-top: 1rem;
+    margin-left: 33rem;
+
+}
+
+.signup-task{
+    font-weight: 400;
+    margin-top: 1rem;
+}
+
+.signup-inputs{
+    width: 80%;
+    height: 2.5rem;
+    margin-top:-0.9rem;
+    margin-left: 2rem;
+    border:0.1px solid #818181 ;
+    padding:0px 5px ;
+}
+
+.signup{
+    width: 80%;
+    background-color: #4CB5F9;
+    border: 0;
+    color: azure;
+    border-radius: 8px;
+    height: 2rem;
+    margin-left: 2rem;
+}
