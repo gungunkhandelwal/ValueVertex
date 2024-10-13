@@ -68,11 +68,18 @@ class LogoutView(APIView):
 class TaskView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def get(self,request):
-        """View a task of user only"""
-        task=Task.objects.filter(user=request.user).order_by('priority','due_date')
-        serializer=TaskSerializer(task,many=True)
-        return Response(serializer.data,status=status.HTTP_200_OK)
+    def get(self, request, id=None):
+        """View all tasks or a single task by its ID"""
+        if id:
+            # Fetch a single task by its ID
+            task = get_object_or_404(Task, id=id, user=request.user)
+            serializer = TaskSerializer(task)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            # Fetch all tasks for the authenticated user
+            tasks = Task.objects.filter(user=request.user).order_by('priority', 'due_date')
+            serializer = TaskSerializer(tasks, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self,request):
         """Create a task"""

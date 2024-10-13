@@ -39,4 +39,4 @@ class LoginSerializer(serializers.Serializer):
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model=Task
-        fields=['title','description','priority','status','due_date']
+        fields=['id','title','description','priority','status','due_date']

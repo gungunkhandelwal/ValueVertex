@@ -1,44 +1,48 @@
 import { Box, TextField, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
 import Navbar from "./Navbar";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 
 
 const AddTask = () => {
-    const [taskData, setTaskData] = useState('');
-    const title=useRef('');
-    const description=useRef('');
-    const navigate=useNavigate();
+    // Manage form data using useState
+    const [taskData, setTaskData] = useState({
+        title: '',
+        description: '',
+        priority: 'Medium',
+        status: 'To Do',
+        due_date: '',
+    });
+    
+    const navigate = useNavigate();
 
+    // Handle input change for all form fields
     const handleChange = (e) => {
         setTaskData({ ...taskData, [e.target.name]: e.target.value });
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const titleElement=title.current.value;
-        const descriptionElement=description.current.value;
         // Get the token from local storage
         const token = localStorage.getItem("token");
 
         try {
             const response = await axios.post(
                 "http://127.0.0.1:8000/task/",
-                {
-                 title:titleElement,
-                 description:descriptionElement
-                },
+                taskData, 
                 {
                     headers: {
-                        Authorization: `Token ${token}`, // Assuming you're using token auth
+                        Authorization: `Token ${token}`, 
                         "Content-Type": "application/json",
                     },
                 }
             );
-            // console.log("Task created successfully:", response.data);
+            
             setTaskData(response.data);
+            console.log(response.data);
             navigate('/home');
         } catch (error) {
             console.error("Error creating task:", error.response ? error.response.data : error.message);
@@ -61,17 +65,17 @@ const AddTask = () => {
                     flexDirection: 'row',
                 }}
             >
-                <form onSubmit={handleSubmit} style={{ width: "90%",marginLeft:'2rem' }}>
+                <form onSubmit={handleSubmit} style={{ width: "90%", marginLeft: '2rem' }}>
                     <TextField
                         label="Title"
                         name="title"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        ref={title}
-                        
-
+                        value={taskData.title} 
+                        onChange={handleChange} 
                     />
+                    
                     <TextField
                         label="Description"
                         name="description"
@@ -80,16 +84,16 @@ const AddTask = () => {
                         margin="normal"
                         multiline
                         rows={4}
-                        ref={description}
-
+                        value={taskData.description}
+                        onChange={handleChange} 
                     />
 
                     <FormControl fullWidth margin="normal">
                         <InputLabel>Priority</InputLabel>
                         <Select
                             name="priority"
-                            value={taskData.priority}
-                            onChange={handleChange}
+                            value={taskData.priority} 
+                            onChange={handleChange} 
                         >
                             <MenuItem value="Low">Low</MenuItem>
                             <MenuItem value="Medium">Medium</MenuItem>
@@ -102,7 +106,7 @@ const AddTask = () => {
                         <Select
                             name="status"
                             value={taskData.status}
-                            onChange={handleChange}
+                            onChange={handleChange} 
                         >
                             <MenuItem value="To Do">To Do</MenuItem>
                             <MenuItem value="In Progress">In Progress</MenuItem>
@@ -119,7 +123,7 @@ const AddTask = () => {
                         type="datetime-local"
                         InputLabelProps={{ shrink: true }}
                         value={taskData.due_date}
-                        onChange={handleChange}
+                        onChange={handleChange} 
                     />
 
                     <Button
@@ -135,8 +139,7 @@ const AddTask = () => {
 
             </Box>
         </>
-    )
-
+    );
 }
 
 export default AddTask;
